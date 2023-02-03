@@ -1,6 +1,7 @@
-# weather-dashboard-using_server-side_APIs
+# Weather Dashboard using server-side APIs
 
-## 
+## Description
+
 Your challenge is to build a weather dashboard that will run in the browser and feature dynamically updated HTML and CSS.
 
 Use the 5 Day Weather Forecast to retrieve weather data for cities. The link should take you to a guide on how to use the 5 Day Forecast API.
@@ -10,6 +11,7 @@ AS A traveler
 I WANT to see the weather outlook for multiple cities
 SO THAT I can plan a trip accordingly
 
+### Project Specification
 
 Create a weather dashboard with form inputs.
 
@@ -35,7 +37,7 @@ The humidity
 
 ![10-server-side-apis-challenge-demo](https://user-images.githubusercontent.com/118351853/216649375-98a4ff6a-56c2-4718-8aec-77b0aa95e5e4.png)
 
-## Tech Stack
+## Technology Stack
 
 ## License
 
