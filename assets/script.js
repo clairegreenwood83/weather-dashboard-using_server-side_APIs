@@ -22,6 +22,10 @@
 
 /* pseudocode
 1. when search button clicked: weather conditions viewed & city is added to search history 
+    - search button click event linked to a function that makes first API call which retrieves city data.
+    - city saved to search history.
+    - longitude and latitude data extracted from city data array and saved to variables.
+    - longitude and latitude data entered into second API call to retrieve weather data for 5 day forecast.
 */
 $("#search-button").on("click", function(event) {
 event.preventDefault();
@@ -30,6 +34,8 @@ event.preventDefault();
 
     var city = $("#search-input").val(); // what user enters to input box #search-input 
     console.log(city);
+
+    $("#history").append(city);
 
     var apiURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&appid=b55d06cc03c4f56a1f7b3ed3746b5ded";
     
@@ -52,7 +58,7 @@ $.ajax({
     var queryURL = "http://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + long + "&appidb55d06cc03c4f56a1f7b3ed3746b5ded";
     console.log(apiURL);
 
-    // find where to append city .append(city);
+   
 
     $.ajax({
                 url: queryURL,
