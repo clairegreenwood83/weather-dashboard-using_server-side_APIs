@@ -47,7 +47,6 @@ $.ajax({
 
     console.log(response);
 
-
     var lat = response[0].lat;
     console.log(lat);
 
@@ -71,27 +70,77 @@ $.ajax({
             console.log(today);
             var dateFormat = today.format("(DD/MM/YY)");
 
-            var current = $("#today"); // this is where the current city and date need to be displayed
-            
+            var today = $("#today")
+            current = $("<h2>"); // this is where the current city and date need to be displayed
+            today.append(current);
             current.append(city + " " + dateFormat);
 
 // temperature, humidity and wind speed added
-
-var temp = $("<div>");
-var humidity = $("<div>");
-var windSpeed = $("<div>");
-
-current.append(temp, humidity, windSpeed);
-
 // convert temperature in Kelvin to degrees celsius
 var tempC = response.list[0].main.temp - 273.15;
 
-temp.text("Temperature: " + tempC.toFixed(2) + " \u2103");
+var temp = $("<div>").text("Temperature: " + tempC.toFixed(2) + " \u2103");
+var humidity = $("<div>").text("Humidity: " + response.list[0].main.humidity + "%");
+var windSpeed = $("<div>").text("Wind speed: " + response.list[0].wind.speed + " KPH");
 
-humidity.text("Humidity: " + response.list[0].main.humidity + "%");
+today.append(temp, humidity, windSpeed);
 
-windSpeed.text("Wind speed: " + response.list[0].wind.speed + " KPH");
-          
+// create Bootstrap cards for 5 day forecast
+var forecast = `
+<h3> 5-Day Forecast </h3>
+<div class="container">
+    <div class="row">
+        <div class="card-deck">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Date</h4>
+                    <p>Forecast</p>
+                </div>
+            </div>   
+            <div class="card">
+                <div class="card-body">
+                   <h4 class="card-title">Date</h4>
+                   <p>Forecast</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                   <h4 class="card-title">Date</h4>
+                   <p>Forecast</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                   <h4 class="card-title">Date</h4>
+                   <p>Forecast</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                   <h4 class="card-title">Date</h4>
+                   <p>Forecast</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+`
+$("#forecast").append(forecast);
+
+//.addClass("card").addClass("text-white").addClass("bg-dark").addClass("mb-3");
+
+// use bootstrap to create a card for each day for forecast
+// create a container inside of section #forecast
+// create a row within container
+// create class="col-lg"
+/* <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+  <div class="card-header">Header</div>
+  <div class="card-body">
+    <h5 class="card-title">Dark card title</h5>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+  </div>
+</div> */
+
           });
         });
   });
