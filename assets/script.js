@@ -40,7 +40,6 @@ event.preventDefault();
     var apiURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&appid=b55d06cc03c4f56a1f7b3ed3746b5ded";
     
     
-
 $.ajax({
     url: apiURL,
     method: "GET"
@@ -55,18 +54,26 @@ $.ajax({
     var long = response[0].lon;
     console.log(long);
 
-    var queryURL = "http://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + long + "&appidb55d06cc03c4f56a1f7b3ed3746b5ded";
-    console.log(apiURL);
+    var queryURL = "http://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + long + "&appid=b55d06cc03c4f56a1f7b3ed3746b5ded";
+    console.log(queryURL);
 
-   
-
+   // second call to API using longitude and latitude retrieved above, to get 5 day weather forecast
     $.ajax({
                 url: queryURL,
                 method: "GET"
               }).then(function(response) {
         
+            console.log(response);
+
+            var today = moment(); //todays date 
+            console.log(today);
+            var dateFormat = today.format("(DD/MM/YY)");
+
+            var current = $("#today"); // this is where the current city and date need to be displayed
             
+            current.append(city + " " + dateFormat);
           
           });
         });
   });
+
