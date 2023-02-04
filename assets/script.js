@@ -65,6 +65,8 @@ $.ajax({
         
             console.log(response);
 
+// current city and date added
+
             var today = moment(); //todays date 
             console.log(today);
             var dateFormat = today.format("(DD/MM/YY)");
@@ -72,6 +74,23 @@ $.ajax({
             var current = $("#today"); // this is where the current city and date need to be displayed
             
             current.append(city + " " + dateFormat);
+
+// temperature, humidity and wind speed added
+
+var temp = $("<div>");
+var humidity = $("<div>");
+var windSpeed = $("<div>");
+
+current.append(temp, humidity, windSpeed);
+
+// convert temperature in Kelvin to degrees celsius
+var tempC = response.list[0].main.temp - 273.15;
+
+temp.text("Temperature: " + tempC.toFixed(2) + " \u2103");
+
+humidity.text("Humidity: " + response.list[0].main.humidity + "%");
+
+windSpeed.text("Wind speed: " + response.list[0].wind.speed + " KPH");
           
           });
         });
