@@ -1,3 +1,7 @@
 .card {
     display:inline-block;
 } 
+
+.card-title {
+    font-size: 1vw;
+}

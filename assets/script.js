@@ -91,34 +91,34 @@ var forecast = `
 <div class="container">
     <div class="row">
         <div class="card-deck">
-            <div class="card">
+            <div class="card" id="day-1">
                 <div class="card-body">
                     <h4 class="card-title">Date</h4>
-                    <p>Forecast</p>
+                    <p></p>
                 </div>
             </div>   
-            <div class="card">
+            <div class="card" id="day-2">
                 <div class="card-body">
                    <h4 class="card-title">Date</h4>
-                   <p>Forecast</p>
+                   <p></p>
                 </div>
             </div>
-            <div class="card">
+            <div class="card" id="day-3">
                 <div class="card-body">
                    <h4 class="card-title">Date</h4>
-                   <p>Forecast</p>
+                   <p></p>
                 </div>
             </div>
-            <div class="card">
+            <div class="card" id="day-4">
                 <div class="card-body">
                    <h4 class="card-title">Date</h4>
-                   <p>Forecast</p>
+                   <p></p>
                 </div>
             </div>
-            <div class="card">
+            <div class="card" id="day-5">
                 <div class="card-body">
                    <h4 class="card-title">Date</h4>
-                   <p>Forecast</p>
+                   <p></p>
                 </div>
             </div>
         </div>
@@ -127,21 +127,81 @@ var forecast = `
 `
 $("#forecast").append(forecast);
 
-//.addClass("card").addClass("text-white").addClass("bg-dark").addClass("mb-3");
+// array index [0], [8], [16], [24], [32] for 5 day forecast
+// var  newDay = [];
+//  for (var i = 0; i < response.list.length; i+=8) {
+//     //console.log(response.list[i].dt_txt);
+    
+//     result = response.list[i];
 
-// use bootstrap to create a card for each day for forecast
-// create a container inside of section #forecast
-// create a row within container
-// create class="col-lg"
-/* <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
-  <div class="card-header">Header</div>
-  <div class="card-body">
-    <h5 class="card-title">Dark card title</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-  </div>
-</div> */
+//      newDay.push(result)
+//     // console.log(newDay.dt_txt);
+//     // console.log(newDay.main.temp);
+//     // console.log(newDay.wind.speed);
+//     // console.log(newDay.main.humidity);
+//  }
+//  console.log(newDay);
+//  console.log(newDay[0].dt_txt);
 
-          });
+// var newDayTemp= [];
+//  for (var i = 0; i < newDay.length; i++) {
+//      result = newDay[i].main.temp;
+//      console.log(result);
+//      newDayTemp.push(result)
+//   }
+
+//   console.log(newDayTemp);
+//      var newDayTemp1 = newDayTemp[0];
+//      console.log(newDayTemp1);
+//      $("#day-1.").text(newDayDate1);
+
+//      var newDayTemp2 = newDayTemp[1];
+//      console.log(newDayDate2);
+//      $("#day-2").text(newDayTemp2);
+
+//      var newDayTemp3 = newDayTemp[2];
+//      console.log(newDayDate3);
+//      $("#day-3").text(newDayTemp3);
+
+//      var newDayTemp4 = newDayTemp[3];
+//      console.log(newDayDate4);
+//      $("#day-4").text(newDayTemp4);
+
+//      var newDayTemp5 = newDayTemp[4];
+//      console.log(newDayDate5);
+//      $("#day-5").text(newDayTemp5);
+
+    // var newDayTemp = newDay.main.temp;
+    // console.log(newDayTemp);
+
+    // var newDayWind = newDay.wind.speed;
+    // console.log(newDayWind);
+
+    // var newDayHumidity = newDay.main.humidity;
+    // console.log(newDayHumidity);
+
+    let day1 = moment();
+    $("#day-1 h4").text(day1.format("(DD/MM/YY)"));
+    console.log(day1);
+
+    let day2  = moment().add(1,'days');
+    $("#day-2 h4").text(day2.format("(DD/MM/YY)"));
+
+    let day3 = moment().add(2, 'days');
+    $("#day-3 h4").text(day3.format("(DD/MM/YY)"));
+
+    let day4 = moment().add(3, 'days');
+    $("#day-4 h4").text(day4.format("(DD/MM/YY)"));
+
+    let day5 = moment().add(4, 'days');
+    $("#day-5 h4").text(day5.format("(DD/MM/YY)"));
+
+
+
+
+});
+
+
+
         });
   });
-
