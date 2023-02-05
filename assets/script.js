@@ -91,31 +91,31 @@ var forecast = `
 <div class="container">
     <div class="row">
         <div class="card-deck">
-            <div class="card" id="day-1">
+            <div class="card text-white bg-dark mb-3" id="day-1">
                 <div class="card-body">
                     <h4 class="card-title">Date</h4>
                     <p></p>
                 </div>
             </div>   
-            <div class="card" id="day-2">
+            <div class="card text-white bg-dark mb-3" id="day-2">
                 <div class="card-body">
                    <h4 class="card-title">Date</h4>
                    <p></p>
                 </div>
             </div>
-            <div class="card" id="day-3">
+            <div class="card text-white bg-dark mb-3" id="day-3">
                 <div class="card-body">
                    <h4 class="card-title">Date</h4>
                    <p></p>
                 </div>
             </div>
-            <div class="card" id="day-4">
+            <div class="card text-white bg-dark mb-3" id="day-4">
                 <div class="card-body">
                    <h4 class="card-title">Date</h4>
                    <p></p>
                 </div>
             </div>
-            <div class="card" id="day-5">
+            <div class="card text-white bg-dark mb-3" id="day-5">
                 <div class="card-body">
                    <h4 class="card-title">Date</h4>
                    <p></p>
