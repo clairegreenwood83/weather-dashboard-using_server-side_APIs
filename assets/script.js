@@ -183,28 +183,25 @@ function citySearch(btnText) {
                 console.log(newDay);
             
             // get weather icon 
-            $(".icon").attr("src", iconUrl);
-            
-            var newDayIcon= [];
+            var newDayIcon = [];
                for (var i = 0; i < newDay.length; i++) {
                 result = newDay[i].weather[0].icon;
                 var weatherIcon = ("https://openweathermap.org/img/w/" + result + ".png");
                 newDayIcon.push(weatherIcon)
-                console.log(newDayIcon);
             }
+            console.log(newDayIcon);
 
             // get temperature for each day
             var newDayTemp= [];
             for (var i = 0; i < newDay.length; i++) {
                     result = newDay[i].main.temp;
-                    //console.log(result);
                     newDayTemp.push(result)
             }
+
             //get wind speed for each day
             var newDayWind = [];
             for (var i = 0; i < newDay.length; i++) {
                 result = newDay[i].wind.speed;                    
-                //console.log(result);
                 newDayWind.push(result)
             }
 
@@ -212,14 +209,21 @@ function citySearch(btnText) {
             var newDayHumidity = [];
             for (var i = 0; i < newDay.length; i++) {
                 result = newDay[i].main.humidity;
-                //console.log(result);
                 newDayHumidity.push(result)
             }
+
+
+            // set weather icon for each day
+        
+            $("#day-1 .icon").attr("src", newDayIcon[0]);
+            $("#day-2 .icon").attr("src", newDayIcon[1]);
+            $("#day-3 .icon").attr("src", newDayIcon[2]);
+            $("#day-4 .icon").attr("src", newDayIcon[3]);
+            $("#day-5 .icon").attr("src", newDayIcon[4]);
 
             // Set temperature on forecast cards
             var newDay1 = newDayTemp[0];
             $("#day-1 .temp").text("Temp: " + newDay1);
-        
             var newDay2 = newDayTemp[1];
             $("#day-2 .temp").text("Temp: " + newDay2);
 
