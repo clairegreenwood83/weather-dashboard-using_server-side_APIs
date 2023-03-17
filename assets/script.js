@@ -1,5 +1,8 @@
 // Load the saved history from local storage when the page is loaded
 $(document).ready(function() {
+    localStorage.removeItem("history");
+    $("#historyList").empty();
+
     var history = JSON.parse(localStorage.getItem("history")) || [];
     var historyList = $("#historyList");
     for (var i = 0; i < history.length; i++) {
@@ -40,7 +43,7 @@ function citySearch(btnText) {
     }
 
     // first API call to get lat and lon for city
-    var apiURL = "https://api.openweathermap.org/geo/1.0/direct?q=" + input + "&appid=b55d06cc03c4f56a1f7b3ed3746b5ded";
+    var apiURL = "https://api.openweathermap.org/geo/1.0/direct?q=" + input + "&appid=030a0e3b2f39a49a017ea33bb2bbcfab";
     
     $.ajax({
         url: apiURL,
@@ -48,8 +51,9 @@ function citySearch(btnText) {
     }).then(function(response) {
         var lat = response[0].lat;
         var long = response[0].lon;
+       
         var queryURL = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + long + "&appid=b55d06cc03c4f56a1f7b3ed3746b5ded";
-        console.log(response);
+        // console.log(response);
 
    // second call to API using longitude and latitude retrieved above, to get 5 day weather forecast
     $.ajax({
@@ -60,7 +64,6 @@ function citySearch(btnText) {
 
             var city = response.city.name; 
 
-            //if (!history.includes(city)) {   // if history list doesn't include city this function will run
             // create buttons for city searched in history
             var historyList = $("#historyList"); 
             var btnExists = false;
@@ -107,46 +110,16 @@ function citySearch(btnText) {
 
             // create Bootstrap cards for 5 day forecast
             var forecast = `
-            <h3> 5-Day Forecast </h3>
-            <div class="container">
+                 <h3> 5-Day Forecast </h3>
+                 <div class="container">
                 <div class="row">
-                    <div class="card-deck">
-                        <div class="card text-white bg-dark mb-3" id="day-1">
-                            <div class="card-body">
-                                <h4 class="card-title">Date</h4>
-                                <img class="icon"></img>
-                                <ul class="text">
-                                    <li class="temp"></li>
-                                    <li class="wind"></li>
-                                    <li class="humidity"></li>
-                                </ul>
+                <div class="card-deck">
+                `;
 
-                            </div>
-                        </div>   
-                        <div class="card text-white bg-dark mb-3" id="day-2">
-                            <div class="card-body">
-                            <h4 class="card-title">Date</h4>
-                            <img class="icon"></img>
-                            <ul class="text">
-                                    <li class="temp"></li>
-                                    <li class="wind"></li>
-                                    <li class="humidity"></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="card text-white bg-dark mb-3" id="day-3">
-                            <div class="card-body">
-                                <h4 class="card-title">Date</h4>
-                                <img class="icon"></img>
-                                <ul class="text">
-                                        <li class="temp"></li>
-                                        <li class="wind"></li>
-                                        <li class="humidity"></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="card text-white bg-dark mb-3" id="day-4">
-                            <div class="card-body">
+                for (var i = 1; i <= 5; i++) {
+                forecast += `
+                    <div class="card text-white bg-dark mb-3" id="day-${i}">
+                        <div class="card-body">
                             <h4 class="card-title">Date</h4>
                             <img class="icon"></img>
                             <ul class="text">
@@ -156,139 +129,161 @@ function citySearch(btnText) {
                             </ul>
                         </div>
                     </div>
-                        <div class="card text-white bg-dark mb-3" id="day-5">
-                            <div class="card-body">
-                            <h4 class="card-title">Date</h4>
-                            <img class="icon"></img>
-                            <ul class="text">
-                                    <li class="temp"></li>
-                                    <li class="wind"></li>
-                                    <li class="humidity"></li>
-                                </ul>
+                `;
+                }
+
+                    forecast += `
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            `
+                    `;
             $("#forecast").append(forecast);
 
+var days = [];
 
-            // get 5 day forecast, array index [0], [8], [16], [24], [32] for 5 day forecast
-            var  newDay = [];
-            for (var i = 0; i < response.list.length; i+=8) {
-                result = response.list[i];
-                newDay.push(result)
-            }
-                console.log(newDay);
-            
-            // get weather icon 
-            var newDayIcon = [];
-               for (var i = 0; i < newDay.length; i++) {
-                result = newDay[i].weather[0].icon;
-                var weatherIcon = ("https://openweathermap.org/img/w/" + result + ".png");
-                newDayIcon.push(weatherIcon)
-            }
-            console.log(newDayIcon);
+for (var i = 0; i < 5; i++) {
+  var day = response.list[i * 8];
 
-            // get temperature for each day
-            var newDayTemp= [];
-            for (var i = 0; i < newDay.length; i++) {
-                    result = newDay[i].main.temp;
-                    newDayTemp.push(result)
-            }
+  var icon = "https://openweathermap.org/img/w/" + day.weather[0].icon + ".png";
+  var temp = day.main.temp;
+  var wind = day.wind.speed;
+  var humidity = day.main.humidity;
 
-            //get wind speed for each day
-            var newDayWind = [];
-            for (var i = 0; i < newDay.length; i++) {
-                result = newDay[i].wind.speed;                    
-                newDayWind.push(result)
-            }
+  days.push({icon: icon, temp: temp, wind: wind, humidity: humidity});
+}
 
-            // get humidity for each day
-            var newDayHumidity = [];
-            for (var i = 0; i < newDay.length; i++) {
-                result = newDay[i].main.humidity;
-                newDayHumidity.push(result)
-            }
+for (var i = 0; i < 5; i++) {
+  var day = days[i];
 
+  $("#day-" + (i+1) + " .icon").attr("src", day.icon);
+  $("#day-" + (i+1) + " .temp").text("Temp: " + day.temp);
+  $("#day-" + (i+1) + " .wind").append("Wind: " + day.wind);
+  $("#day-" + (i+1) + " .humidity").append("Humidity: " + day.humidity);
 
-            // set weather icon for each day
-        
-            $("#day-1 .icon").attr("src", newDayIcon[0]);
-            $("#day-2 .icon").attr("src", newDayIcon[1]);
-            $("#day-3 .icon").attr("src", newDayIcon[2]);
-            $("#day-4 .icon").attr("src", newDayIcon[3]);
-            $("#day-5 .icon").attr("src", newDayIcon[4]);
+  var date = moment().add(i, 'days');
+  $("#day-" + (i+1) + " h4").text(date.format("(DD/MM/YY)"));
+}
 
-            // Set temperature on forecast cards
-            var newDay1 = newDayTemp[0];
-            $("#day-1 .temp").text("Temp: " + newDay1);
-            var newDay2 = newDayTemp[1];
-            $("#day-2 .temp").text("Temp: " + newDay2);
-
-            var newDay3 = newDayTemp[2];
-            $("#day-3 .temp").text("Temp: " + newDay3);
-
-            var newDay4 = newDayTemp[3];
-            $("#day-4 .temp").text("Temp: " + newDay4);
-
-            var newDay5 = newDayTemp[4];
-            $("#day-5 .temp").text("Temp: " + newDay5);
-
-            // Set wind speed on forecast cards
-            var newDayWind1 = newDayWind[0];
-
-            $("#day-1 .wind").append("Wind: " + newDayWind1);
-
-            var newDayWind2 = newDayWind[1];
-            $("#day-2 .wind").append("Wind: " + newDayWind2);
-
-            var newDayWind3 = newDayWind[2];
-            $("#day-3 .wind").append("Wind: " + newDayWind3);
-
-            var newDayWind4 = newDayWind[3];
-            $("#day-4 .wind").append("Wind: " + newDayWind4);
-
-            var newDayWind5 = newDayWind[4];
-            $("#day-5 .wind").append("Wind: " + newDayWind5);
-  
-            // Set humidity on forecast cards
-
-            var newDayHumidity1 = newDayHumidity[0];
-
-            $("#day-1 .humidity").append("Humidity: " + newDayHumidity1);
-
-            var newDayHumidity2 = newDayHumidity[1];
-            $("#day-2 .humidity").append("Humidity: " + newDayHumidity2);
-
-            var newDayHumidity3 = newDayHumidity[2];
-            $("#day-3 .humidity").append("Humidity: " + newDayHumidity3);
-
-            var newDayHumidity4 = newDayHumidity[3];
-            $("#day-4 .humidity").append("Humidity: " + newDayHumidity4);
-
-            var newDayHumidity5 = newDayHumidity[4];
-            $("#day-5 .humidity").append("Humidity: " + newDayHumidity5);
-
-            // set date on forecast cards
-
-            let day1 = moment();
-            $("#day-1 h4").text(day1.format("(DD/MM/YY)"));
-            console.log(day1);
-
-            let day2  = moment().add(1,'days');
-            $("#day-2 h4").text(day2.format("(DD/MM/YY)"));
-
-            let day3 = moment().add(2, 'days');
-            $("#day-3 h4").text(day3.format("(DD/MM/YY)"));
-
-            let day4 = moment().add(3, 'days');
-            $("#day-4 h4").text(day4.format("(DD/MM/YY)"));
-
-            let day5 = moment().add(4, 'days');
-            $("#day-5 h4").text(day5.format("(DD/MM/YY)"));
 
         });
     });
 }
+
+            // get 5 day forecast, array index [0], [8], [16], [24], [32] for 5 day forecast
+//             var  newDay = [];
+//             for (var i = 0; i < response.list.length; i+=8) {
+//                 result = response.list[i];
+//                 newDay.push(result)
+//             }
+//                 console.log(newDay);
+            
+//             // get weather icon 
+//             var newDayIcon = [];
+//                for (var i = 0; i < newDay.length; i++) {
+//                 result = newDay[i].weather[0].icon;
+//                 var weatherIcon = ("https://openweathermap.org/img/w/" + result + ".png");
+//                 newDayIcon.push(weatherIcon)
+//             }
+//             console.log(newDayIcon);
+
+//             // get temperature for each day
+//             var newDayTemp= [];
+//             for (var i = 0; i < newDay.length; i++) {
+//                     result = newDay[i].main.temp;
+//                     newDayTemp.push(result)
+//             }
+
+//             //get wind speed for each day
+//             var newDayWind = [];
+//             for (var i = 0; i < newDay.length; i++) {
+//                 result = newDay[i].wind.speed;                    
+//                 newDayWind.push(result)
+//             }
+
+//             // get humidity for each day
+//             var newDayHumidity = [];
+//             for (var i = 0; i < newDay.length; i++) {
+//                 result = newDay[i].main.humidity;
+//                 newDayHumidity.push(result)
+//             }
+
+
+//             // set weather icon for each day
+        
+//             $("#day-1 .icon").attr("src", newDayIcon[0]);
+//             $("#day-2 .icon").attr("src", newDayIcon[1]);
+//             $("#day-3 .icon").attr("src", newDayIcon[2]);
+//             $("#day-4 .icon").attr("src", newDayIcon[3]);
+//             $("#day-5 .icon").attr("src", newDayIcon[4]);
+
+//             // Set temperature on forecast cards
+//             var newDay1 = newDayTemp[0];
+//             $("#day-1 .temp").text("Temp: " + newDay1);
+//             var newDay2 = newDayTemp[1];
+//             $("#day-2 .temp").text("Temp: " + newDay2);
+
+//             var newDay3 = newDayTemp[2];
+//             $("#day-3 .temp").text("Temp: " + newDay3);
+
+//             var newDay4 = newDayTemp[3];
+//             $("#day-4 .temp").text("Temp: " + newDay4);
+
+//             var newDay5 = newDayTemp[4];
+//             $("#day-5 .temp").text("Temp: " + newDay5);
+
+//             // Set wind speed on forecast cards
+//             var newDayWind1 = newDayWind[0];
+
+//             $("#day-1 .wind").append("Wind: " + newDayWind1);
+
+//             var newDayWind2 = newDayWind[1];
+//             $("#day-2 .wind").append("Wind: " + newDayWind2);
+
+//             var newDayWind3 = newDayWind[2];
+//             $("#day-3 .wind").append("Wind: " + newDayWind3);
+
+//             var newDayWind4 = newDayWind[3];
+//             $("#day-4 .wind").append("Wind: " + newDayWind4);
+
+//             var newDayWind5 = newDayWind[4];
+//             $("#day-5 .wind").append("Wind: " + newDayWind5);
+  
+//             // Set humidity on forecast cards
+
+//             var newDayHumidity1 = newDayHumidity[0];
+
+//             $("#day-1 .humidity").append("Humidity: " + newDayHumidity1);
+
+//             var newDayHumidity2 = newDayHumidity[1];
+//             $("#day-2 .humidity").append("Humidity: " + newDayHumidity2);
+
+//             var newDayHumidity3 = newDayHumidity[2];
+//             $("#day-3 .humidity").append("Humidity: " + newDayHumidity3);
+
+//             var newDayHumidity4 = newDayHumidity[3];
+//             $("#day-4 .humidity").append("Humidity: " + newDayHumidity4);
+
+//             var newDayHumidity5 = newDayHumidity[4];
+//             $("#day-5 .humidity").append("Humidity: " + newDayHumidity5);
+
+//             // set date on forecast cards
+
+//             let day1 = moment();
+//             $("#day-1 h4").text(day1.format("(DD/MM/YY)"));
+//             console.log(day1);
+
+//             let day2  = moment().add(1,'days');
+//             $("#day-2 h4").text(day2.format("(DD/MM/YY)"));
+
+//             let day3 = moment().add(2, 'days');
+//             $("#day-3 h4").text(day3.format("(DD/MM/YY)"));
+
+//             let day4 = moment().add(3, 'days');
+//             $("#day-4 h4").text(day4.format("(DD/MM/YY)"));
+
+//             let day5 = moment().add(4, 'days');
+//             $("#day-5 h4").text(day5.format("(DD/MM/YY)"));
+
+//         });
+//     });
+// }
